@@ -23,11 +23,6 @@ public class RentalSystemController {
 	public String toDetail() {
 		return "detail";
 	}
-	
-	@GetMapping(value = "/login")
-	public String toLogin() {
-		return "login";
-	}
 
 	@GetMapping("/login")
 	public String toLogin() {
