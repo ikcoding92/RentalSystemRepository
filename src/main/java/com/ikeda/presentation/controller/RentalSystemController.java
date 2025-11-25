@@ -8,7 +8,7 @@ public class RentalSystemController {
 	
 	@GetMapping(value = "/home")
 	public String toHome() {
-		return // ここからホーム画面に遷移する
+		return "index";
 	}
 
 }
