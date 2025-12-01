@@ -168,21 +168,27 @@
     </div>
 </header>
 <main class="form-signin w-100 m-auto">
-  <form>
+	  <form th:action="@{/login}" th:object="${loginForm}" method="post">
+
     <h1 class="h3 mb-3 fw-normal mt-5">ログイン</h1>
 
+<div th:if="${error}" class="alert alert-danger">
+    <span th:text="${error}">メールアドレスまたはパスワードが正しくありません</span>
+</div>
+
+
     <div class="form-floating">
-      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+    <input type="email" class="form-control" id="floatingInput" th:field="*{email}" placeholder="name@example.com">
       <label for="floatingInput">Email アドレス</label>
     </div>
     <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+    <input type="password" class="form-control" id="floatingPassword" th:field="*{password}" placeholder="Password">
       <label for="floatingPassword">パスワード</label>
     </div>
 
     
     <button class="btn btn-primary w-100 py-2" type="submit">ログイン</button>
-    <button class="btn btn-primary w-100 py-2 mt-3" type="submit">新規登録はこちら</button>
+    <a class="btn btn-secondary w-100 py-2 mt-3" th:href="@{/form}">新規登録はこちら</a>
     <p class="mt-5 mb-3 text-body-secondary">&copy;株式会社 Music Life Agency</p>
   </form>
 </main>
