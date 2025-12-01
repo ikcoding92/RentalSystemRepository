@@ -8,7 +8,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ikeda.LoginService;
@@ -43,12 +42,12 @@ public class RentalSystemController {
 		return "detail";
 	}
 
-	@GetMapping("/login")
+	@GetMapping("/gologin")//二つあるので仮のgologinに変更してます
 	public String toLogin() {
 		return "login"; // templates/login.html を返す
 	}
 
-	@PostMapping("/login")
+/*	@PostMapping("/login")
 	public String doLogin(
 			@RequestParam String email,
 			@RequestParam String password,
@@ -63,7 +62,7 @@ public class RentalSystemController {
 			return "login";
 		}
 
-	}
+	}*/
 	@Autowired
 	private DvdItemRepository dvdItemRepository;
     @GetMapping("/")
@@ -107,7 +106,7 @@ public class RentalSystemController {
         return "cartconfirm";
     }
     
-    @GetMapping("/form")
+    @GetMapping("/rentalForm") // かぶっていたため変更：formをrentalForm
     public String showForm(Model model) {
 
         model.addAttribute("memberForm", new MemberForm());
