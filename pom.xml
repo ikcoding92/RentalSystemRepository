@@ -77,6 +77,7 @@
     </dependencies>
 
     <build>
+		<!-- index.htmlを探させる -->
 		<resources>
 	        <resource>
 	            <directory>src/main/resources</directory>
@@ -86,7 +87,7 @@
 	        </resource>
 	    </resources>
         <plugins>
-            <!-- Lombok 用（あってもなくてもOK） -->
+            <!-- Lombok 用 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
