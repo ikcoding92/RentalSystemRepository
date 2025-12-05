@@ -49,6 +49,7 @@ public class CartController {
         return "cart"; // cart.html
     }
     
+    // カート内のアイテム削除機能
     @GetMapping("/delete/{id}")
     public String itemDeletedCart(@PathVariable("id") int id, HttpSession session, Model model) {
     	List<DvdItem> cart = (List<DvdItem>) session.getAttribute("cart");
@@ -57,5 +58,18 @@ public class CartController {
     	model.addAttribute("cart", cart);
     	return "cart";
     }
+    
+    // 注文を確定時の処理
+//    @GetMapping("/cart/confirm")
+//    public String confirm() {
+    
+    	// ログイン中のcustomerのstatusにてレンタル状況を更新
+    	// ordersにて新規注文情報を作成
+    	// productsのrented_stock、not_rented_stockにて在庫状況を更新
+    
+//    	return  注文情報表示ページ ;
+//    }
+    
+    
 
 }
