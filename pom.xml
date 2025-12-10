@@ -60,6 +60,12 @@
 	        <artifactId>postgresql</artifactId>
 	        <scope>runtime</scope>
 	    </dependency>
+	    
+	        <!-- ★ BCrypt に必要！ -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
 
         <!-- Lombok（あってもなくてもOK） -->
         <dependency>

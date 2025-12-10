@@ -1,6 +1,10 @@
+package com.ikeda.presentation.controller;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.ikeda.entity.Member;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -9,18 +13,18 @@ public class MypageController {
 
     @GetMapping("/mypage")
     public String showMypage(HttpSession session, Model model) {
-        // セッションからログインユーザーを取得
-        String loginUser = (String) session.getAttribute("loginUser");
+        // セッションから Member を取得
+        Member loginUser = (Member) session.getAttribute("loginUser");
         
         if (loginUser == null) {
             // 未ログインならログインページへリダイレクト
             return "redirect:/login";
         }
 
-        // 必要に応じてユーザー情報やレンタル履歴を model にセット
+        // View にユーザー情報を渡す
         model.addAttribute("loginUser", loginUser);
 
         // templates/mypage.html を表示
-        return "editForm";
+        return "mypage";
     }
 }

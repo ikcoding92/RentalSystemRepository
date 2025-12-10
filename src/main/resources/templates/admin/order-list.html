@@ -35,79 +35,6 @@
 				<div class="col-12">
 					<div class="d-flex justify-content-between align-items-center mb-4">
 						<h2 class="fw-light">注文管理</h2>
-						<div>
-							<span class="badge bg-primary fs-6 me-2">総注文数: <span th:text="${totalOrders}">235</span>件</span>
-						</div>
-					</div>
-
-					<!-- 統計情報カード -->
-					<div class="row mb-4">
-						<div class="col-md-3">
-							<div class="card text-center">
-								<div class="card-body">
-									<h5 class="card-title text-muted">レンタル中</h5>
-									<p class="display-6 fw-bold text-warning" th:text="${rentingOrders}">45</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="card text-center">
-								<div class="card-body">
-									<h5 class="card-title text-muted">返却待ち</h5>
-									<p class="display-6 fw-bold text-danger" th:text="${overdueOrders}">8</p>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-3">
-							<div class="card text-center">
-								<div class="card-body">
-									<h5 class="card-title text-muted">返却済み</h5>
-									<p class="display-6 fw-bold text-success" th:text="${completedOrders}">182</p>
-								</div>
-							</div>
-						</div>
-					<!--	<div class="col-md-3">
-							<div class="card text-center">
-								<div class="card-body">
-									<h5 class="card-title text-muted">今月の売上</h5>
-									<p class="display-6 fw-bold text-info" th:text="'¥' + ${#numbers.formatInteger(monthlySales, 1, 'COMMA')}">¥1,250,000</p>
-								</div>
-							</div>
-						</div>   売り上げは必要ない場合削除予定-->
-					</div>
-
-					<!-- 検索フォーム -->
-					<div class="card mb-4">
-						<div class="card-body">
-							<form method="get" action="/admin/order">
-								<div class="row g-3">
-									<div class="col-md-3">
-										<input type="text" class="form-control" name="orderId" 
-											placeholder="注文IDで検索" th:value="${orderId}">
-									</div>
-									<div class="col-md-3">
-										<input type="text" class="form-control" name="userName" 
-											placeholder="ユーザー名で検索" th:value="${userName}">
-									</div>
-									<div class="col-md-2">
-										<select class="form-select" name="status">
-											<option value="">すべてのステータス</option>
-											<option value="renting" th:selected="${status == 'renting'}">レンタル中</option>
-											<option value="overdue" th:selected="${status == 'overdue'}">返却期限超過</option>
-											<option value="returned" th:selected="${status == 'returned'}">返却済み</option>
-											<option value="cancelled" th:selected="${status == 'cancelled'}">キャンセル</option>
-										</select>
-									</div>
-									<div class="col-md-2">
-										<input type="date" class="form-control" name="dateFrom" 
-											placeholder="開始日" th:value="${dateFrom}">
-									</div>
-									<div class="col-md-2">
-										<button type="submit" class="btn btn-secondary w-100">検索</button>
-									</div>
-								</div>
-							</form>
-						</div>
 					</div>
 
 					<!-- 注文テーブル -->
@@ -121,7 +48,6 @@
 											<th>ユーザー名</th>
 											<th>商品名</th>
 											<th>レンタル期間</th>
-											<th>料金</th>
 											<th>注文日</th>
 											<th>ステータス</th>
 											<th style="width: 150px;">操作</th>
@@ -147,9 +73,7 @@
 												</div>
 												<small class="text-muted"><span th:text="${order.days}">4</span>日間</small>
 											</td>
-											<td>
-												<span class="fw-bold" th:text="'¥' + ${#numbers.formatInteger(order.totalPrice, 1, 'COMMA')}">¥20,000</span>
-											</td>
+
 											<td th:text="${#temporals.format(order.orderDate, 'yyyy/MM/dd')}">2024/11/28</td>
 											<td>
 												<span class="badge" 
@@ -163,36 +87,35 @@
 												</span>
 											</td>
 											<td>
-												<div class="btn-group btn-group-sm" role="group">
-													<button type="button" class="btn btn-outline-primary" 
-														data-bs-toggle="modal" 
-														th:data-bs-target="'#orderDetailModal' + ${order.id}"
-														title="詳細">
-														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
-															<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
-															<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
-														</svg>
-													</button>
-													<button type="button" class="btn btn-outline-success" 
-														th:if="${order.status == 'renting' or order.status == 'overdue'}"
-														th:onclick="'confirmReturn(\'' + ${order.id} + '\')'"
-														title="返却処理">
-														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
-															<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-															<path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05"/>
-														</svg>
-													</button>
-													<a th:href="@{/admin/order/invoice/{id}(id=${order.id})}" 
-														class="btn btn-outline-info" 
-														target="_blank"
-														title="請求書">
-														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-text" viewBox="0 0 16 16">
-															<path d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1z"/>
-															<path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1"/>
-														</svg>
-													</a>
-												</div>
-											</td>
+	<div class="btn-group btn-group-sm" role="group">
+
+		<!-- 編集ボタン -->
+		<a th:href="@{/admin/order/edit/{id}(id=${order.id})}" 
+		   class="btn btn-outline-primary"
+		   title="編集">
+			<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+				 fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+				<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+			</svg>
+		</a>
+
+		<!-- 削除ボタン -->
+		<form th:action="@{/admin/order/delete/{id}(id=${order.id})}"
+			  method="post"
+			  style="display: inline;"
+			  th:onsubmit="|return confirm('注文ID: ${order.id} を削除しますか？')|">
+			<button type="submit" class="btn btn-outline-danger" title="削除">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+					 fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+					<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+					<path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+				</svg>
+			</button>
+		</form>
+
+	</div>
+</td>
+
 										</tr>
 										<!-- ここまでループ終了 -->
 									</tbody>
@@ -294,46 +217,49 @@
 						<thead class="table-light">
 							<tr>
 								<th>商品名</th>
-								<th>カテゴリ</th>
 								<th style="width: 100px;">数量</th>
-								<th style="width: 120px;">単価/日</th>
-								<th style="width: 120px;">小計</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
 								<td th:text="${order.productName}">Canon EOS R5</td>
-								<td th:text="${order.productCategory}">カメラ</td>
 								<td th:text="${order.quantity}">1</td>
-								<td th:text="'¥' + ${#numbers.formatInteger(order.pricePerDay, 1, 'COMMA')}">¥5,000</td>
-								<td th:text="'¥' + ${#numbers.formatInteger(order.totalPrice, 1, 'COMMA')}">¥20,000</td>
 							</tr>
 						</tbody>
-						<tfoot>
-							<tr>
-								<td colspan="4" class="text-end fw-bold">合計金額:</td>
-								<td class="fw-bold text-primary fs-5" th:text="'¥' + ${#numbers.formatInteger(order.totalPrice, 1, 'COMMA')}">¥20,000</td>
-							</tr>
-						</tfoot>
 					</table>
+				</div>
 
-					<div th:if="${order.notes != null and order.notes != ''}" class="alert alert-info">
-						<strong>備考:</strong> <span th:text="${order.notes}"></span>
-					</div>
-				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
-					<a th:href="@{/admin/order/invoice/{id}(id=${order.id})}" 
-						class="btn btn-info" 
-						target="_blank">
-						請求書を表示
-					</a>
-					<button type="button" class="btn btn-success" 
-						th:if="${order.status == 'renting' or order.status == 'overdue'}"
-						th:onclick="'confirmReturn(\'' + ${order.id} + '\')'">
-						返却処理
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+						閉じる
 					</button>
+
+					<!-- 編集ボタン -->
+					<a th:href="@{/admin/order/edit/{id}(id=${order.id})}" 
+					   class="btn btn-primary">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
+							 fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+							<path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+						</svg>
+						編集
+					</a>
+
+					<!-- 削除ボタン（フォーム送信） -->
+					<form th:action="@{/admin/order/delete/{id}(id=${order.id})}" 
+						  method="post" 
+						  style="display: inline;"
+						  th:onsubmit="|return confirm('注文ID: ${order.id} を削除しますか？')|">
+						<button type="submit" class="btn btn-danger">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" 
+								 fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+								<path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+								<path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+							</svg>
+							削除
+						</button>
+					</form>
 				</div>
+
 			</div>
 		</div>
 	</div>

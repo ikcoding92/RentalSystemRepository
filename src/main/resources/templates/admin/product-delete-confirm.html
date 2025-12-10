@@ -69,22 +69,11 @@
 											</tr>
 											<tr>
 												<th class="bg-light">商品名</th>
-												<td th:text="${product.title}">Canon EOS R5</td>
+												<td th:text="${product.title}">○○えもん</td>
 											</tr>
-											<tr>
-												<th class="bg-light">カテゴリ</th>
-												<td>
-													<span class="badge bg-secondary" th:text="${product.category}">カメラ</span>
-												</td>
-											</tr>
-											<tr>
-												<th class="bg-light">メーカー</th>
-												<td th:text="${product.manufacturer}">Canon</td>
-											</tr>
-											<tr>
-												<th class="bg-light">レンタル料金</th>
-												<td th:text="'¥' + ${#numbers.formatInteger(product.pricePerDay, 1, 'COMMA')} + ' / 日'">¥5,000 / 日</td>
-											</tr>
+											
+										
+		
 											<tr>
 												<th class="bg-light">在庫数</th>
 												<td th:text="${product.stock} + ' 台'">3 台</td>

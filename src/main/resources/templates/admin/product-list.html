@@ -44,36 +44,7 @@
 					</div>
 
 					<!-- 検索フォーム -->
-					<div class="card mb-4">
-						<div class="card-body">
-							<form method="get" action="/admin/product-list">
-								<div class="row g-3">
-									<div class="col-md-4">
-										<input type="text" class="form-control" name="keyword" placeholder="商品名で検索" th:value="${keyword}">
-									</div>
-									<div class="col-md-3">
-										<select class="form-select" name="category">
-											<option value="">すべてのカテゴリ</option>
-											<option value="camera" th:selected="${category == 'camera'}">カメラ</option>
-											<option value="lens" th:selected="${category == 'lens'}">レンズ</option>
-											<option value="accessory" th:selected="${category == 'accessory'}">アクセサリー</option>
-										</select>
-									</div>
-									<div class="col-md-3">
-										<select class="form-select" name="status">
-											<option value="">すべてのステータス</option>
-											<option value="available" th:selected="${status == 'available'}">在庫あり</option>
-											<option value="rented" th:selected="${status == 'rented'}">レンタル中</option>
-											<option value="maintenance" th:selected="${status == 'maintenance'}">メンテナンス中</option>
-										</select>
-									</div>
-									<div class="col-md-2">
-										<button type="submit" class="btn btn-secondary w-100">検索</button>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
+		
 
 					<!-- 商品テーブル -->
 					<div class="card">
@@ -85,8 +56,6 @@
 											<th style="width: 80px;">画像</th>
 											<th>商品ID</th>
 											<th>商品名</th>
-											<th>カテゴリ</th>
-											<th>価格/日</th>
 											<th>在庫</th>
 											<th>ステータス</th>
 											<th style="width: 200px;">操作</th>
@@ -94,7 +63,7 @@
 									</thead>
 									<tbody>
 										<!-- ここからループ開始 -->
-										<tr th:each="product : ${products}">
+										<tr th:each="product : ${productList}">
 											<td>
 												<img th:src="@{/img/{file}(file=${product.imageFileName})}" 
 													th:alt="${product.title}" 
@@ -102,11 +71,8 @@
 													style="width: 60px; height: 60px; object-fit: cover;">
 											</td>
 											<td th:text="${product.id}">P001</td>
-											<td th:text="${product.title}">Canon EOS R5</td>
-											<td>
-												<span class="badge bg-secondary" th:text="${product.category}">カメラ</span>
-											</td>
-											<td th:text="'¥' + ${#numbers.formatInteger(product.pricePerDay, 1, 'COMMA')}">¥5,000</td>
+											<td th:text="${product.title}">ざえもん</td>
+											
 											<td th:text="${product.stock}">3</td>
 											<td>
 												<span class="badge" 
@@ -117,13 +83,7 @@
 											</td>
 											<td>
 												<div class="btn-group btn-group-sm" role="group">
-													<a th:href="@{/admin/product-detail/{id}(id=${product.id})}" 
-														class="btn btn-outline-primary" title="詳細">
-														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
-															<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
-															<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
-														</svg>
-													</a>
+										
 													<a th:href="@{/admin/product-form/{id}(id=${product.id})}" 
 														class="btn btn-outline-secondary" title="編集">
 														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">

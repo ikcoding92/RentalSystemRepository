@@ -93,16 +93,8 @@
 											<th>商品名:</th>
 											<td th:text="${product.title}">Canon EOS R5</td>
 										</tr>
-										<tr>
-											<th>カテゴリ:</th>
-											<td>
-												<span class="badge bg-secondary" th:text="${product.category}">カメラ</span>
-											</td>
-										</tr>
-										<tr>
-											<th>メーカー:</th>
-											<td th:text="${product.manufacturer}">Canon</td>
-										</tr>
+									
+						
 										<tr>
 											<th>ステータス:</th>
 											<td>
@@ -119,17 +111,11 @@
 
 							<div class="card mb-3">
 								<div class="card-header bg-success text-white">
-									<h5 class="mb-0">価格・在庫情報</h5>
+									<h5 class="mb-0">在庫情報</h5>
 								</div>
 								<div class="card-body">
 									<table class="table table-borderless mb-0">
-										<tr>
-											<th style="width: 150px;">レンタル料金:</th>
-											<td>
-												<span class="fs-4 text-primary fw-bold" th:text="'¥' + ${#numbers.formatInteger(product.pricePerDay, 1, 'COMMA')}">¥5,000</span>
-												<span class="text-muted"> / 日</span>
-											</td>
-										</tr>
+									
 										<tr>
 											<th>在庫数:</th>
 											<td>
@@ -154,41 +140,7 @@
 						</div>
 					</div>
 
-					<!-- レンタル履歴 (オプション) -->
-					<div class="card mt-4">
-						<div class="card-header bg-secondary text-white">
-							<h5 class="mb-0">最近のレンタル履歴</h5>
-						</div>
-						<div class="card-body">
-							<div class="table-responsive">
-								<table class="table table-hover">
-									<thead>
-										<tr>
-											<th>注文ID</th>
-											<th>ユーザー名</th>
-											<th>レンタル期間</th>
-											<th>料金</th>
-											<th>ステータス</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr th:each="rental : ${rentalHistory}">
-											<td th:text="${rental.orderId}">ORD001</td>
-											<td th:text="${rental.userName}">山田太郎</td>
-											<td th:text="${rental.period}">2024-01-15 ~ 2024-01-17</td>
-											<td th:text="'¥' + ${#numbers.formatInteger(rental.totalPrice, 1, 'COMMA')}">¥15,000</td>
-											<td>
-												<span class="badge bg-success" th:text="${rental.status}">返却済み</span>
-											</td>
-										</tr>
-										<tr th:if="${#lists.isEmpty(rentalHistory)}">
-											<td colspan="5" class="text-center text-muted">レンタル履歴がありません</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
+
 
 				</div>
 			</div>
