@@ -54,8 +54,8 @@ public class MemberService {
 
         return memberRepository.save(member);
 	 
-    @Autowired
-    private MemberRepository memberRepository;
+//    @Autowired
+//    private MemberRepository memberRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
