@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 
-import com.ikeda.entity.Member;
 import com.ikeda.presentation.form.MemberForm;
 import com.ikeda.service.MemberService;
 
@@ -23,7 +21,8 @@ public class FormController {
         return "form";
     }
 
-    @PostMapping("/form")
+    /*Registercontorollerがこの部分担う
+     @PostMapping("/form")
     public String submitForm(MemberForm memberForm) {
 
         // MemberForm → Member（Entity）へ変換
@@ -37,11 +36,11 @@ public class FormController {
         member.setPhone(memberForm.getPhone());   //ｐｏｈｅ追加
 
         member.setPassword(memberForm.getPassword()); // 平文 → Serviceでハッシュ化
-        
+        */
      // 正しく保存
-        memberService.saveMember(member);
+        //memberService.saveMember(member);
         // ここで Service を呼んで DB 登録などを行う
         // memberService.register(memberForm);
-        return "redirect:/complete"; // 登録完了後にトップ画面へ
-    }
+        //return "redirect:/complete"; // 登録完了後にトップ画面へ
+		//}
 }
