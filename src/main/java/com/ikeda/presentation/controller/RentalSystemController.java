@@ -1,6 +1,5 @@
 package com.ikeda.presentation.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -113,30 +112,25 @@ public class RentalSystemController {
             session.setAttribute("itemData", itemData);
         }
 
-        model.addAttribute("itemData", itemData);
+    // 商品詳細は HomeController に統一 → このメソッドは削除
 
-        return "index"; // 今の index.html を使う
-    }*/
-    
-    @GetMapping("/cartconfirm")
-    public String showCartConfirm() {
-        // templates/cartconfirm.html を表示
-        return "cartconfirm";
-    }
-    
-    @GetMapping("/rentalForm") // かぶっていたため変更：formをrentalForm
+    // 会員登録フォーム表示
+    @GetMapping("/rentalForm")
     public String showForm(Model model) {
-
         model.addAttribute("memberForm", new MemberForm());
         return "form";
     }
-    
+
+    // 会員情報編集フォーム表示
     @GetMapping("/editform")
     public String showEditForm(Model model) {
-    	MemberForm form = new MemberForm();
-    	model.addAttribute("memberForm", form);
+        model.addAttribute("memberForm", new MemberForm());
         return "editForm";
     }
-	
 
+    // カート確認ページ
+    @GetMapping("/cartconfirm")
+    public String showCartConfirm() {
+        return "cartconfirm";
+    }
 }
