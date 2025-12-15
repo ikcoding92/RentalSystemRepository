@@ -2,6 +2,8 @@ package com.ikeda.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ikeda.entity.DvdItem;
@@ -17,6 +19,12 @@ public class DvdItemService {
         this.dvdItemRepository = dvdItemRepository;
     }
 
+    /**
+     * DVD 全件取得（ページング対応）
+     */
+    public Page<DvdItem> findAll(Pageable pageable) {
+        return dvdItemRepository.findAll(pageable);
+    }
     /**
      * DVD 全件取得（一覧表示用）
      */
