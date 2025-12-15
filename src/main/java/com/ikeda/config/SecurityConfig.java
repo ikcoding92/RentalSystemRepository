@@ -55,7 +55,7 @@ public class SecurityConfig {
 
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/login", "/form","/css/**", "/js/**","/img/**", "/detail/**", "/admin/**").permitAll()
+                .requestMatchers("/", "/login", "/form","/css/**", "/js/**","/img/**", "/detail/**", "/admin/**", "/index").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
@@ -63,7 +63,7 @@ public class SecurityConfig {
                 .loginProcessingUrl("/login")
                 .usernameParameter("email")     // ★ ログインIDに email を使用
                 .passwordParameter("password")
-                .defaultSuccessUrl("/home", true)
+                .defaultSuccessUrl("/home", false)
                 .permitAll()
             )
             .logout(logout -> logout
