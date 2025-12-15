@@ -1,16 +1,22 @@
 package com.ikeda.presentation.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.ikeda.entity.DvdItem; // DvdItem Entity をインポート
+import com.ikeda.entity.DvdItem;
 import com.ikeda.presentation.form.ProductForm;
 import com.ikeda.service.DvdItemService;
+
 
 @Controller
 public class AdminProductController {
@@ -20,10 +26,19 @@ public class AdminProductController {
 
     // 商品一覧
     @GetMapping("/admin/products")
-    public String showProductList(Model model) {
-        model.addAttribute("product", productService.findAll());
-        return "admin/product-list";//商品一覧ページへ遷移する
+    public String showProductList(
+            @RequestParam(defaultValue = "0") int page,
+            Model model
+    ) {
+        int pageSize = 9;
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by("id").ascending());
+
+        Page<DvdItem> products = productService.findAll(pageable); // Pageで返すメソッドが必要
+        model.addAttribute("products", products);
+
+        return "admin/product-list";
     }
+
 
     // 商品新規登録フォーム
     @GetMapping("/admin/products/new")
