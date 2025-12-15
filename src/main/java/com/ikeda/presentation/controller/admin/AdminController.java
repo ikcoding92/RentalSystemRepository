@@ -1,10 +1,6 @@
 package com.ikeda.presentation.controller.admin;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-
-import com.ikeda.presentation.form.AdminLoginForm;
 
 @Controller
 public class AdminController {
@@ -16,11 +12,11 @@ public class AdminController {
 	
 	
 	// index.htmlから管理者用ログインページに直接遷移
-	@GetMapping("/admin/login")
-	public String toAdminLoginPage(Model model) {
-		model.addAttribute("adminLoginForm", new AdminLoginForm());
-		return "admin/login";
-	}
+//	@GetMapping("/admin/login")
+//	public String toAdminLoginPage(Model model) {
+//		model.addAttribute("adminLoginForm", new AdminLoginForm());
+//		return "admin/login";
+//	}
 	
 	// admin/loginからのPost通信（必要かどうか不明）
 //	@PostMapping("/admin/login")
