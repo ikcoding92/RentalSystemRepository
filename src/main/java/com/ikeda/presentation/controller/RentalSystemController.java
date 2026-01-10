@@ -1,6 +1,10 @@
 package com.ikeda.presentation.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import com.ikeda.LoginService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,15 +21,17 @@ import com.ikeda.data.ItemData;
 import com.ikeda.entity.DvdItem;
 import com.ikeda.presentation.form.MemberForm;
 import com.ikeda.repository.DvdItemRepository;
+import com.ikeda.service.LoginService;
 
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class RentalSystemController {
-//	@Autowired
-//	private LoginService loginService;  // インスタンスを注入
+	@Autowired
+	private LoginService loginService;  // インスタンスを注入
+
 	
-	@GetMapping(value = "/home")
+	@GetMapping(value = "/gohome")//二つあるので仮のgoに変更してます
 	public String toHome( /* HttpSession session, Model model */ ) {
 		
 //		ItemData itemData = (ItemData) session.getAttribute("itemData");
@@ -36,7 +42,7 @@ public class RentalSystemController {
 //			session.setAttribute("itemData", itemData);
 //		}
 //		model.addAttribute("itemData", itemData);
-		return "index";
+		return "home";
 	}
 	
 //	@GetMapping(value = "/detail")
@@ -62,7 +68,7 @@ public class RentalSystemController {
 		return "login"; // templates/login.html を返す
 	}
 
-/*	@PostMapping("/login")
+/*	@PostMapping("/login")//LoginController.javaに移植してます
 	public String doLogin(
 			@RequestParam String email,
 			@RequestParam String password,
@@ -77,10 +83,11 @@ public class RentalSystemController {
 			return "login";
 		}
 
-	}*/
+	} */
 	@Autowired
 	private DvdItemRepository dvdItemRepository;
-    @GetMapping("/")
+    /*遷移先が二つになるのでコメントアウト
+     @GetMapping("/")
     public String index(Model model,
                         @RequestParam(name = "page", defaultValue = "0") int page,HttpSession session) {
 
@@ -105,30 +112,25 @@ public class RentalSystemController {
             session.setAttribute("itemData", itemData);
         }
 
-        model.addAttribute("itemData", itemData);
+    // 商品詳細は HomeController に統一 → このメソッドは削除
 
-        return "index"; // 今の index.html を使う
-    }
-    
-    @GetMapping("/cartconfirm")
-    public String showCartConfirm() {
-        // templates/cartconfirm.html を表示
-        return "cartconfirm";
-    }
-    
-    @GetMapping("/rentalForm") // かぶっていたため変更：formをrentalForm
+    // 会員登録フォーム表示
+    @GetMapping("/rentalForm")
     public String showForm(Model model) {
-
         model.addAttribute("memberForm", new MemberForm());
         return "form";
     }
-    
+
+    // 会員情報編集フォーム表示
     @GetMapping("/editform")
     public String showEditForm(Model model) {
-    	MemberForm form = new MemberForm();
-    	model.addAttribute("memberForm", form);
+        model.addAttribute("memberForm", new MemberForm());
         return "editForm";
     }
-	
 
+    // カート確認ページ
+    @GetMapping("/cartconfirm")
+    public String showCartConfirm() {
+        return "cartconfirm";
+    }
 }
